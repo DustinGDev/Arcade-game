@@ -3,6 +3,8 @@ let fromRight = "-rotated";
 
 let score = 0;
 
+let speedMulti = 1;
+
 // Enemies our player must avoid
 var Enemy = function(field = 0, index = allEnemies.length) {
     // Variables applied to each of our instances go here,
@@ -31,12 +33,14 @@ var Enemy = function(field = 0, index = allEnemies.length) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    this.x += this.movement*dt;
+    this.x += this.movement*dt*speedMulti;
 
     //Swaps the old bug with a new one at the end of screen
     if ((this.x > 500 && this.movement == 50) || (this.x < -100 && this.movement == -50) ) {
       allEnemies[this.index] = (new Enemy(randomNumber(0, 2), this.index));
     }
+
+
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -75,6 +79,11 @@ class Player {
       this.x = 200;
       score += 1;
       document.querySelector('p').textContent = `Score: ${score}`;
+
+      //Checks for the score to raise difficulty
+      if(score % 10 == 0){
+        speedMulti +=1;
+      }
     }
 
     //Checks if the player ran into an enemy
@@ -83,6 +92,7 @@ class Player {
         this.y = 400;
         this.x = 200;
         score = 0;
+        speedMulti = 1;
         document.querySelector('p').textContent = `Score: ${score}`;
       }
     }
