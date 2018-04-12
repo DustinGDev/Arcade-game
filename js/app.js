@@ -1,6 +1,8 @@
 //bug direction var
 let fromRight = "-rotated";
 
+let score = 0;
+
 // Enemies our player must avoid
 var Enemy = function(field = 0, index = allEnemies.length) {
     // Variables applied to each of our instances go here,
@@ -56,7 +58,7 @@ class Player {
   }
 
   update() {
-    let Enemies = allEnemies;
+    //Gets all Enemy positions
     let allEnemyPositions = (() => {
       let positions = [];
       if (Array.isArray(allEnemies)) {
@@ -67,12 +69,21 @@ class Player {
       }
     })()
 
-    console.log(this.y);
+    //Checks if the player got to the end
+    if (this.y == -15){
+      this.y = 400;
+      this.x = 200;
+      score += 1;
+      document.querySelector('p').textContent = `Score: ${score}`;
+    }
 
+    //Checks if the player ran into an enemy
     for (let value of allEnemyPositions){
       if(value[1] == this.y && this.x < value[0]+80 && this.x > value[0]-80) {
         this.y = 400;
         this.x = 200;
+        score = 0;
+        document.querySelector('p').textContent = `Score: ${score}`;
       }
     }
   }

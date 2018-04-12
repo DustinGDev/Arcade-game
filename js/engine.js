@@ -21,12 +21,16 @@ var Engine = (function(global) {
     var doc = global.document,
         win = global.window,
         canvas = doc.createElement('canvas'),
+        score = doc.createElement('p'),
         ctx = canvas.getContext('2d'),
         lastTime;
 
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
+
+    score.textContent = 'Score: 0';
+    doc.body.insertBefore(score, canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.

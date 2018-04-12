@@ -1,3 +1,8 @@
 body {
     text-align: center;
 }
+
+p {
+  margin-left: -400px;
+  margin-bottom: -20px;
+}
