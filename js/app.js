@@ -7,48 +7,47 @@ let speedMulti = 1;
 
 // Enemies our player must avoid
 var Enemy = function(field = 0, index = allEnemies.length) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-    this.y = field * 83 + 68;
-    this.index = index;
+  // Variables applied to each of our instances go here,
+  // we've provided one for you to get started
+  this.y = field * 83 + 68;
+  this.index = index;
 
-    //Sets the direction from where the bug will come from
-    if (field == 1) {
-      bugDirection = fromRight;
-      this.x = 500;
-      this.movement = -50;
-    }
-    else {
-      bugDirection = "";
-      this.x = -100;
-      this.movement = 50;
-    }
+  //Sets the direction from where the bug will come from
+  if (field == 1) {
+    bugDirection = fromRight;
+    this.x = 500;
+    this.movement = -50;
+  } else {
+    bugDirection = "";
+    this.x = -100;
+    this.movement = 50;
+  }
 
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = `images/enemy-bug${bugDirection}.png`;
+  // The image/sprite for our enemies, this uses
+  // a helper we've provided to easily load images
+  this.sprite = `images/enemy-bug${bugDirection}.png`;
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    this.x += this.movement*dt*speedMulti;
+  this.x += this.movement * dt * speedMulti;
 
-    //Swaps the old bug with a new one at the end of screen
-    if ((this.x > 500 && this.movement == 50) || (this.x < -100 && this.movement == -50) ) {
-      allEnemies[this.index] = (new Enemy(randomNumber(0, 2), this.index));
-    }
+  //Swaps the old bug with a new one at the end of screen
+  if ((this.x > 500 && this.movement == 50) || (this.x < -100 && this.movement == -50)) {
+    allEnemies[this.index] = (new Enemy(randomNumber(0, 2), this.index));
+  }
 
 
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+  // You should multiply any movement by the dt parameter
+  // which will ensure the game runs at the same speed for
+  // all computers.
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Now write your own player class
@@ -74,21 +73,21 @@ class Player {
     })()
 
     //Checks if the player got to the end
-    if (this.y == -15){
+    if (this.y == -15) {
       this.y = 400;
       this.x = 200;
       score += 1;
       document.querySelector('p').textContent = `Score: ${score}`;
 
       //Checks for the score to raise difficulty
-      if(score % 10 == 0){
-        speedMulti +=1;
+      if (score % 10 == 0) {
+        speedMulti += 1;
       }
     }
 
     //Checks if the player ran into an enemy
-    for (let value of allEnemyPositions){
-      if(value[1] == this.y && this.x < value[0]+80 && this.x > value[0]-80) {
+    for (let value of allEnemyPositions) {
+      if (value[1] == this.y && this.x < value[0] + 80 && this.x > value[0] - 80) {
         this.y = 400;
         this.x = 200;
         score = 0;
@@ -105,14 +104,11 @@ class Player {
   handleInput(key) {
     if (key == 'left' && this.x > 0) {
       this.x += -100;
-    }
-    else if (key == 'right' && this.x < 400) {
+    } else if (key == 'right' && this.x < 400) {
       this.x += 100;
-    }
-    else if (key == 'up' && this.y > 0) {
+    } else if (key == 'up' && this.y > 0) {
       this.y += -83;
-    }
-    else if (key == 'down' && this.y < 400) {
+    } else if (key == 'down' && this.y < 400) {
       this.y += 83;
     }
   }
@@ -131,11 +127,12 @@ function randomNumber(min, max) {
 let allEnemies = [];
 
 //Initial Enemy Spawn function
-const initiateEnemies = setInterval(()=> {
-  if (allEnemies.length < 4){
+const initiateEnemies = setInterval(() => {
+  if (allEnemies.length < 4) {
     allEnemies.push(new Enemy(randomNumber(0, 2)));
+  } else {
+    clearInterval(initiateEnemies)
   }
-  else {clearInterval(initiateEnemies)}
 }, 3000)
 allEnemies.push(new Enemy(randomNumber(0, 2)));
 let player = new Player();
@@ -145,12 +142,12 @@ let player = new Player();
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
+  var allowedKeys = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down'
+  };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+  player.handleInput(allowedKeys[e.keyCode]);
 });
